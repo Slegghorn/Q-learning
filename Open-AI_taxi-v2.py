@@ -52,3 +52,25 @@ for episode in range(total_episodes):
             break
     #change epsilon
     epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(decay_rate * (episode + 1))
+
+#testing
+env.reset()
+rewards = []
+for episode in range(total_test_episodes):
+    state = env.reset()
+    step = 0
+    done = False
+    total_rewards = 0
+    print('--------------------')
+    print('Episode :', episode)
+    for step in range(max_steps):
+        action = np.argmax(qtable[state, :])
+        new_state, reward, done, info = env.step(action)
+        total_rewards += reward
+        if done == True:
+            rewards.append(total_rewards)
+            print('Score :', total_rewards)
+            break
+        state = new_state
+env.close()
+print('average score:', sum(rewards) / total_test_episodes)
